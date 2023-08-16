@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>
+        <%= title %>
+    </h1>
+    <a href="/user">홈으로 이동</a>
+    <form name="profile">
+        <input type="hidden" id="id" value="<%= userInfo.id %>">
+        <label for="userid">아이디: </label>
+        <input type="text" id="userid" value="<%= userInfo.userid %>" readonly>
+        <br />
+        <label for="name">이름: </label>
+        <input type="text" id="name" value="<%= userInfo.name %>">
+        <br />
+        <label for="pw">비밀번호: </label>
+        <input type="password" id="pw" value="<%= userInfo.pw %>">
+        <br />
+        <br />
+        <button type="button" onclick="editProfile()">수정</button>
+        <button type="button" onclick="deleteProfile('<%= userInfo.id %>')">삭제</button>
+        <div class="result"></div>
+        <br />
+    </form>
+
+    <script>
+        function editProfile() {
+            const resultBox = document.querySelector('.result');
+
+            const form = document.forms['profile'];
+            const data = {
+                id: Number(form.id.value),
+                userid: form.userid.value,
+                name: form.name.value,
+                pw: form.pw.value,
+            };
+
+            console.log(data);
+
+            axios({
+                method: 'POST',
+                url: '/user/profile/edit',
+                data: data,
+            }).then((res) => {
+                if (res.data.result) {
+                    resultBox.textContent = '프로필 수정 성공';
+                    resultBox.style.color = 'blue';
+                };
+            });
+        };
+
+        function deleteProfile(id) {
+            const resultBox = document.querySelector('.result');
+
+            const form = document.forms['profile'];
+
+            if (!confirm('삭제하시겠습니까?')) {
+                return;
+            }
+
+            axios({
+                method: 'POST',
+                url: '/user/profile/delete',
+                data: {
+                    id: Number(id),
+                },
+            }).then(res => {
+                console.log('res', res);
+                if (res.data.result) {
+                    resultBox.textContent = '프로필 삭제 성공';
+                    resultBox.style.color = 'red';
+                    window.location.href = '/user';
+                };
+            });
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>
+        <%= title %>
+    </h1>
+    <form name="signup">
+        <div>
+            <input type="text" id="userid" placeholder="아이디">
+        </div>
+        <div>
+            <input type="text" id="name" placeholder="이름">
+        </div>
+        <div>
+            <input type="password" id="pw" placeholder="비밀번호">
+        </div>
+        <br />
+        <button type="button" onclick="axiosPost()">회원가입</button>
+        <br />
+        <div class="result"></div>
+    </form>
+
+    <script>
+        function axiosPost() {
+            const resultBox = document.querySelector('.result');
+
+            const form = document.forms['signup'];
+            const data = {
+                userid: form.userid.value,
+                name: form.name.value,
+                pw: form.pw.value,
+            };
+
+            console.log(data);
+
+            axios({
+                method: 'POST',
+                url: '/user/signup',
+                data: data,
+            }).then((res) => {
+                console.log('res', res);
+                if (res.data.result) {
+                    resultBox.textContent = '회원가입 성공'
+                    resultBox.style.color = 'blue';
+                    window.location.href = '/user/signin';
+                };
+            });
+        };
+    </script>
+</body>
+
+</html>

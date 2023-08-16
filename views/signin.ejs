@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>
+        <%= title %>
+    </h1>
+    <form name="signin" id="signin">
+        <div>
+            <input type="text" id="userid" placeholder="아이디">
+        </div>
+        <div>
+            <input type="password" id="pw" placeholder="비밀번호">
+        </div>
+        <br />
+        <button type="button" onclick="login()">로그인</button>
+        <button type="button"><a href="/user/signup" style="text-decoration: none; color: black;">회원 가입</a></button>
+        <br />
+        <div class="result"></div>
+    </form>
+    <form action="/user/profile" method="post" name="form_profile">
+        <input type="hidden" name="id" />
+        <input type="hidden" name="userid" />
+        <input type="hidden" name="pw" />
+    </form>
+
+    <script>
+        $("#signin").keypress(function (e) {
+            if (e.keyCode === 13) {
+                login();
+            }
+        });
+
+        function login() {
+            const resultBox = document.querySelector('.result');
+
+            const loginForm = document.forms['signin'];
+            const profileForm = document.forms['form_profile'];
+
+            const data = {
+                userid: loginForm.userid.value,
+                pw: loginForm.pw.value,
+            };
+
+            console.log(data);
+
+            axios({
+                method: 'POST',
+                url: '/user/signin',
+                data: data,
+            }).then((res) => {
+                console.log('res', res);
+                if (res.data.result) {
+                    resultBox.textContent = '로그인 성공';
+                    resultBox.style.color = 'blue';
+                    profileForm.id.value = data.id;
+                    profileForm.userid.value = data.userid;
+                    profileForm.pw.value = data.pw;
+                    profileForm.submit();
+                } else {
+                    resultBox.textContent = '로그인 실패';
+                    resultBox.style.color = 'red';
+                    // window.location.href = '/user/signin';
+                    // window.location.reload();
+                    loginForm.reset();
+                };
+            });
+        };
+    </script>
+</body>
+
+</html>
