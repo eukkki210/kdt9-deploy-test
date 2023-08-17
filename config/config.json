@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "admin",
-    "password": "Inter!0719",
+    "password": "inter!0719",
     "database": "kdt-test",
     "host": "kdt-test-seunggi.cj9qsrvx7lmq.ap-northeast-2.rds.amazonaws.com",
     "dialect": "mysql"
