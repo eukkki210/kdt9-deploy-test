@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "eukkki",
+    "username": "admin",
     "password": "Inter!0719",
     "database": "kdt9",
-    "host": "127.0.0.1",
+    "host": "kdt-test-seunggi.cj9qsrvx7lmq.ap-northeast-2.rds.amazonaws.com",
     "dialect": "mysql"
   },
   "test": {
